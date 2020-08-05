@@ -1,4 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { addCostume } from '../actions/addCostume'
+import { fetchCategories } from '../actions/fetchCategories'
 
 //class because there is local state holding form values
 class CostumeInput extends React.Component {
@@ -6,7 +9,7 @@ class CostumeInput extends React.Component {
     state = {
         title: '',
         price: '', 
-        category: '', 
+        category_id: 1, 
         location: '',
         owner_name: '', 
         owner_email: '', 
@@ -15,7 +18,19 @@ class CostumeInput extends React.Component {
 
     //pass in event so it knows what it's changing
     handleChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+            //abstrating value of name to be whichever form input is changing
+            //inside of brackets because a key in an object can't have periods - kind of like order of operations "evaluate this first"
+        })
+    }
 
+    handleSubmit = (event) => {
+        //prevent from re-render
+        event.preventDefault()
+        //needs argument to pass into action
+        this.props.addCostume(this.state)
+        
     }
 
     //use this because we're in a class component
@@ -23,37 +38,42 @@ class CostumeInput extends React.Component {
     render() {
         return (
             <div>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <label>Costume Listing Title: </label>
-                    <input type='text' value={this.state.title} onChange={this.handleChange} placeholder="e.g., Batman Costume, medieval corset"/><br></br>
+                    <input name="title" type='text' value={this.state.title} onChange={this.handleChange} placeholder="e.g., Batman Costume, medieval corset"/><br></br>
                     
                     <label>Price to Borrow/Sell: </label>
-                    <input type='text' value={this.state.price} placeholder="e.g., $25, free to borrow"/><br></br>
+                    <input name="price" type='text' value={this.state.price} onChange={this.handleChange} placeholder="e.g., $25, free to borrow"/><br></br>
                    
                     <label>Category: </label>
-                    <select name='category' value={this.state.category}>
-                        <option value="Film">Film</option>
-                        <option value="Book">Book</option>
-                        <option value="Comic">Comic</option>
-                        <option value="Anime">Anime</option>
-                        <option value="Other">Other</option>
+                    <select name='category_id' value={this.state.category_id} onChange={this.handleChange} >
+                        {this.props.categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
                     </select><br></br>
                     
                     <label>Location/Neighborhood: </label>
-                    <input type='text' value={this.state.location} placeholder="e.g., Midtown NYC, Astoria, Queens"/><br></br>
+                    <input name="location" type='text' value={this.state.location} onChange={this.handleChange} placeholder="e.g., Midtown NYC, Astoria, Queens"/><br></br>
                    
                     <label>Owner Name: </label>
-                    <input type='text' value={this.state.owner_name} /><br></br>
+                    <input name="owner_name" type='text' value={this.state.owner_name} onChange={this.handleChange} /><br></br>
                    
                     <label>Owner E-mail: </label>
-                    <input type='text'value={this.state.owner_email} /><br></br>
+                    <input name="owner_email" type='text'value={this.state.owner_email} onChange={this.handleChange} /><br></br>
                     
                     <label>Costume Description: </label>
-                    <textarea rows='4' cols='50' value={this.state.description} placeholder="e.g., Black catsuit, fits size small/medium. Available for trades/borrows only."/><br></br>
+                    <textarea name="description" rows='4' cols='50' value={this.state.description} onChange={this.handleChange} placeholder="e.g., Black catsuit, fits size small/medium. Available for trades/borrows only."/><br></br>
+                    <input type="submit"/><br></br>
                 </form>
             </div>
         )
     }
 }
 
-export default CostumeInput
+// function mapStateToProps(state) {
+//     return {
+//       categories: state.categoryReducer.category
+//     }
+// }  
+
+//responsible to adding data to store - don't need mapStateToProps
+//without thunk we would have to call mapDispatch, but now we have access to it in the action
+export default connect(null, {addCostume, fetchCategories})(CostumeInput)
