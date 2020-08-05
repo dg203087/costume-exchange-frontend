@@ -1,15 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
+// import { connect } from 'react-redux'
+import CostumesContainer from './containers/CostumesContainer'
+// import { fetchCostumes } from './actions/fetchCostumes'
 import './App.css';
 
 class App extends React.Component {
-  render {
+
+
+  render() {
     return (
       <div className="App">
-        App
+        <CostumesContainer />
       </div>
     )
   }
 }
 
-export default App;
+
+//update store directly from component - give access to this.props.fetchCostumes
+//essentially calling store.dispatch on fetchCostumes()
+export default (App)
