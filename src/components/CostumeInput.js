@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { addCostume } from '../actions/addCostume'
-import { fetchCategories } from '../actions/fetchCategories'
 
 //class because there is local state holding form values
 class CostumeInput extends React.Component {
@@ -9,14 +8,15 @@ class CostumeInput extends React.Component {
     state = {
         title: '',
         price: '', 
-        category_id: 1, 
         location: '',
         owner_name: '', 
         owner_email: '', 
-        description: ''
+        description: '',
+        photos: null,
+        category_id: 1
     }
 
-    //pass in event so it knows what it's changing
+    // handleChange automatically passes event to first parameter
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
@@ -26,16 +26,23 @@ class CostumeInput extends React.Component {
     }
 
     handleSubmit = (event) => {
-        //prevent from re-render
-        event.preventDefault()
-        //needs argument to pass into action
-        this.props.addCostume(this.state)
-        
+        event.preventDefault() //prevent from re-render
+        this.props.addCostume(this.state) //needs argument to pass into action
+        // setState is asynch - doesn't matter which order it is placed in
+        this.setState({
+            title: '',
+            price: '', 
+            location: '',
+            owner_name: '', 
+            owner_email: '', 
+            description: '',
+            photos: null,
+            category_id: 1
+        })
     }
 
-    //use this because we're in a class component
-    //handleChange automatically passes event to first parameter
-    render() {
+    // render - only in class component
+    render(props) {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -45,10 +52,10 @@ class CostumeInput extends React.Component {
                     <label>Price to Borrow/Sell: </label>
                     <input name="price" type='text' value={this.state.price} onChange={this.handleChange} placeholder="e.g., $25, free to borrow"/><br></br>
                    
-                    <label>Category: </label>
-                    <select name='category_id' value={this.state.category_id} onChange={this.handleChange} >
+                    {/* <label>Select a Category: </label>
+                    <select name='category_id' value={this.props.category_id} onChange={this.handleChange} >
                         {this.props.categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
-                    </select><br></br>
+                    </select><br></br> */}
                     
                     <label>Location/Neighborhood: </label>
                     <input name="location" type='text' value={this.state.location} onChange={this.handleChange} placeholder="e.g., Midtown NYC, Astoria, Queens"/><br></br>
@@ -76,4 +83,4 @@ class CostumeInput extends React.Component {
 
 //responsible to adding data to store - don't need mapStateToProps
 //without thunk we would have to call mapDispatch, but now we have access to it in the action
-export default connect(null, {addCostume, fetchCategories})(CostumeInput)
+export default connect(null, {addCostume})(CostumeInput)
