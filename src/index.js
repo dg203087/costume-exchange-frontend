@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux'
-import thunk from 'redus-thunk'
+import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
+import { BrowserRouter as Router } from 'react-router-dom'
+
+import costumeReducer from './reducers/costumeReducer'
 
 import './index.css';
 import App from './App';
@@ -15,12 +18,14 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 //reducers will tell us what we do with our store based on actions - return new version
 // first element is the reducer 
 // second is any sort of middleware - thunk
-let store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
+let store = createStore(costumeReducer, composeEnhancers(applyMiddleware(thunk)))
 
 //provider so store is global to all components creates
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </Provider>,
   document.getElementById('root')
 )
