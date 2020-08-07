@@ -4,10 +4,11 @@ import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import costumeReducer from './reducers/costumeReducer'
 
-import './index.css';
+// import './index.css';
 import App from './App';
 
 //compose allows you to chain together middleware
