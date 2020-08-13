@@ -14,11 +14,11 @@ const NavigationBar = () => {
         <Nav className="mr-auto">
           <Nav.Link href="/costumes/new">Post Your Costumes</Nav.Link>
           <Nav.Link href="/costumes">Costume List</Nav.Link>
-          <Nav.Link href="/categories">Costumes By Category</Nav.Link>
+          {/* <Nav.Link href="/categories">Costumes By Category</Nav.Link> */}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
-    <img src="/header2.png" width="100%" height="100%" />
+    <img alt="" src="/header3.png" width="100%" height="100%" />
     <br></br><br></br>
   </div>
   )
