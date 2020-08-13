@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Route } from 'react-router-dom'
 
-import {fetchCategories} from '../actions/fetchCostumes'
-
-
+import {fetchCategories} from '../actions/fetchCategories'
+import Categories from '../components/Categories'
+import Category from '../components/Category'
 
 class CategoriesContainer extends React.Component {
     
-    //connect function to redux store
     componentDidMount(){
         this.props.fetchCategories()
     }
@@ -15,21 +15,20 @@ class CategoriesContainer extends React.Component {
     render() {
         return (
             <div>
-                Costumes by Category
-                {/* <CostumeInput /><br></br>
-                <Costumes costumes={this.props.costumes} /> */}
+                <Categories categories={this.props.categories} />
+                <br></br>
+                <Route path='/categories/:id' render={(routerProps) => <Category {...routerProps} categories={this.props.categories}/> } />
+                <Route path='/categories' render={(routerProps) => <Categories {...routerProps} categories={this.props.categories}/> } />
             </div>
         )
     }
 }
 
-//to see info use mapStateToProps
-//give this access to these props
 const mapStateToProps = state => {
     return {
-        categories: state.categories
+        categories: state.categoryState.categories
     }
 }
 
-
 export default connect(mapStateToProps, {fetchCategories})(CategoriesContainer)
+// export default CategoriesContainer
