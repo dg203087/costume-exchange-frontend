@@ -8,3 +8,6 @@ export function fetchCategories() {
         }))
     }
 }
+
+//creates actions object which is dispatched to reducer
+//reducer returns updated state
