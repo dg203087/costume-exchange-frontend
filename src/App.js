@@ -1,7 +1,7 @@
 import React from 'react';
 import CostumesContainer from './containers/CostumesContainer'
-import CategoriesContainer from './containers/CategoriesContainer';
 import NavigationBar from './components/NavigationBar'
+import './App.css'
 
 class App extends React.Component {
 
@@ -9,7 +9,6 @@ class App extends React.Component {
     return (
       <div className="App">
         <NavigationBar />
-        <CategoriesContainer />
         <CostumesContainer />
       </div>
     )
