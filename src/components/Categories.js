@@ -1,20 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap'
+import { Card, CardColumns } from 'react-bootstrap'
+import Costumes from '../components/Costumes'
 
 const Categories = (props) =>  {
+    debugger
     return (
         <div>
-            <ButtonGroup>
-                <DropdownButton as={ButtonGroup} title="Categories" id="bg-nested-dropdown" variant='danger'>
-                    {props.categories.map(category => 
-                        <div key={category.id}> 
-                            <Dropdown.Item><Link to={`/catgories/${category.id}`}>{category.name}</Link></Dropdown.Item>
-                            <Dropdown.Item href={category.id}>{category.name}</Dropdown.Item>
-                        </div>
-                    )}
-                </DropdownButton>
-            </ButtonGroup>
+            {props.category.name}
+            {/* <if ({props.costumes.category.id] === }
+                <h2>{category.name}</h2>
+                <Costumes costumes={props.costumes}/>  */}
         </div>
     )
 }
