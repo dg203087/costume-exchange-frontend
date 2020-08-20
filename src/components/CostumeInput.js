@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { addCostume } from '../actions/addCostume'
 import { Form, Button, Col } from 'react-bootstrap'
-// import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
 
 //class because there is local state holding form values
 class CostumeInput extends React.Component {
@@ -17,37 +17,58 @@ class CostumeInput extends React.Component {
             owner_name: '', 
             owner_email: '', 
             description: '',
+            // photo: {},
             photo: '',
-            categories: [
-                {id: 1, name: 'Film'}
-            ]
+            category_id: 1,
+            // categories: [
+            //     {id: 1, name: 'Film'}
+            // ]
         }
     }
 
     // handleChange automatically passes event to first parameter
     handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-            //abstrating value of name to be whichever form input is changing
-            //inside of brackets because a key in an object can't have periods - kind of like order of operations "evaluate this first"
-        })
+        // if (event.target.name === 'photo') {
+        //     this.setState({
+        //         [event.target.name]: event.target.files[0]
+        //     })
+        // } else {
+            this.setState({
+                [event.target.name]: event.target.value
+                //abstraction - inside of brackets because a key in an object can't have periods - kind of like order of operations "evaluate this first"
+            })
+        // }
     }
 
-    handleImageChange = (event) => {
-        if (event.target.value) {
-            let path = event.target.value
-            let newPath = path.replace(/^C:\\fakepath\\/, "")
-            this.setState({ 
-                photo: newPath
-            })
-        }
-    }
+    // handleImageChange = (event) => {
+        
+    //     if (event.target.value) {
+    //         // let path = event.target.value
+    //         // let newPath = path.replace(/^C:\\fakepath\\/, "")
+    //         this.setState({ 
+    //             photo: event.target.files[0]
+    //         })
+    //     }
+    // }
 
     handleSubmit = (event) => {
-        event.preventDefault() //prevent from re-render
-        this.props.addCostume(this.state) //needs argument to pass into action
-        // setState is asynch - doesn't matter which order it is placed in
+        event.preventDefault() 
         
+        // let costume = {
+        //     title: this.state.title,
+        //     price: this.state.price, 
+        //     location: this.state.location,
+        //     owner_name: this.state.owner_name, 
+        //     owner_email: this.state.owner_email, 
+        //     description: this.state.description,
+        //     category_id: this.state.category_id
+        // }
+
+        // let photo = {
+        //     photo: this.state.photo
+        // }
+        
+        this.props.addCostume(this.state) 
         this.setState({
             title: '',
             price: '', 
@@ -56,10 +77,12 @@ class CostumeInput extends React.Component {
             owner_email: '', 
             description: '',
             photo: '',
-            categories: [
-                {id: 1, name: 'Film'}
-            ]
+            category_id: 1,
+            // categories: [
+            //     {id: 1, name: 'Film'}
+            // ]
         })
+        this.props.history.push('/costumes')
     }
 
     render() {
@@ -104,8 +127,13 @@ class CostumeInput extends React.Component {
                         <Form.Control as="textarea" name="description" rows='4' cols='50' value={this.state.description} onChange={this.handleChange} placeholder="e.g., Black catsuit, fits size small/medium. Available for trades/borrows only."/>
                     </Form.Group>
 
+                    {/* <Form.Group as={Col} >
+                        <Form.File name="photo" accept="image/png, image/jpeg" label="Upload Costume Photo:" onChange={this.handleChange}/>
+                    </Form.Group> */}
+
                     <Form.Group as={Col} >
-                        <Form.File name="photo" accept="image/png, image/jpeg" label="Upload Costume Photo:" onChange={this.handleImageChange}/>
+                        <Form.Label>Upload Costume URL: </Form.Label>
+                        <Form.Control name="photo" type='text' value={this.state.photo} onChange={this.handleChange}/>
                     </Form.Group>
 
                     <Form.Group as={Col} >
@@ -120,4 +148,4 @@ class CostumeInput extends React.Component {
 
 //responsible to adding data to store - don't need mapStateToProps
 //without thunk we would have to call mapDispatch, but now we have access to it in the action
-export default connect(null, {addCostume})(CostumeInput)
+export default connect(null, {addCostume})(withRouter(CostumeInput))
