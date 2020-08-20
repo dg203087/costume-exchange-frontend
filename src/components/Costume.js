@@ -1,14 +1,21 @@
 //functional component - presentational - display - no state
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { deleteCostume } from '../actions/deleteCostume'
 import { Card, Button } from 'react-bootstrap'
-// import { Redirect } from 'react-router-dom'
-//to fix: null routes/redirect
+import { withRouter } from 'react-router-dom'
 
 const Costume = (props) => {
+    
+    //now have dispatch to props for delete transaction
+    const handleDelete = (costumeID) => {
+        props.deleteCostume(costumeID)
+        props.history.push('/costumes')
+    }
+
     // let costume = props.costumes[props.match.params.id - 1]
     let costume = props.costumes.filter(costume => costume.id == props.match.params.id)[0]
-    console.log(costume)
+
     return (
         <div>
             {/* {costume ? null : <Redirect to='/costumes'/> */}
@@ -16,7 +23,7 @@ const Costume = (props) => {
                 <Card.Header as="h5">
                     {costume ? costume.title : null } - {costume ? costume.price : null } 
                 </Card.Header>
-                {/* <Card.Img variant='top' src={costume.photo} /> */}
+                <Card.Img variant='top' src={costume.photo} />
                 <Card.Body>
                   <Card.Title>Category: {costume ? costume.category.name : null }</Card.Title>
                   <Card.Text>
@@ -25,6 +32,7 @@ const Costume = (props) => {
                         <b>Owner E-Mail: </b>{costume ? costume.owner_email : null }<br></br>
                         <b>Costume Description: </b>{costume ? costume.description : null }<br></br>
                   </Card.Text>
+                  <Button variant='warning' onClick={() => handleDelete(costume.id)}>Delete Costume</Button><br></br><br></br>
                   <Button href={`/costumes`} variant='danger'>Return to Costume List</Button>
                 </Card.Body>
               </Card>
@@ -33,4 +41,4 @@ const Costume = (props) => {
     )
 }
 
-export default Costume
+export default connect(null, {deleteCostume})(withRouter(Costume))
