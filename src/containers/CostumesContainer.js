@@ -24,9 +24,7 @@ class CostumesContainer extends React.Component {
                 <Switch>
                     <Route path='/costumes/new' render={(routerProps) => <CostumeInput {...routerProps} categories={this.props.categories}/> } />
                     <Route exact path='/costumes/:id' render={(routerProps) => <Costume {...routerProps} costumes={this.props.costumes}/> } />
-                    {/* <Route exact path='/costumes' render={(routerProps) => <Costumes {...routerProps} costumes={this.props.costumes}/> } /> */}
                     <Route exact path='/costumes' render={(routerProps) => <CategoriesContainer {...routerProps} costumes={this.props.costumes}/> } />
-                    {/* <Route exact path='/costumes/categories/:id' render={(routerProps) => <CategoriesContainer {...routerProps} costumes={this.props.costumes}/> } /> */}
                 </Switch>
             </div>
         )
