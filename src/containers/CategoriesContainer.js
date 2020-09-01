@@ -21,13 +21,29 @@ class CategoriesContainer extends React.Component {
 
     renderCostumes = () => {
         const filteredCostumes = this.props.costumes.filter(costume => [costume.category.id].includes(this.state.category_id))
-        return (this.state.category_id ? <Costumes costumes={filteredCostumes}/> : <Costumes costumes={this.props.costumes}/>)
+        const costumesByTitle = this.props.costumes.filter(costume => costume.title.toLowerCase().includes(this.state.searchBy.toLowerCase()))
+       
+        if (this.state.searchBy) {
+           return <Costumes costumes={costumesByTitle} />
+        } else if (this.state.category_id) {
+            return <Costumes costumes={filteredCostumes} />
+        } else {
+            return <Costumes costumes={this.props.costumes} />
+        }
+        // return (this.state.category_id ? <Costumes costumes={filteredCostumes}/> : <Costumes costumes={this.props.costumes}/>)
     }
 
-    filter = (event) => {
+    filterCategories = (event) => {
         event.preventDefault()
         this.setState({
             category_id: parseInt([event.target.value])
+        })
+    }
+    
+    filterByTitle = (event) => {
+        event.preventDefault()
+        this.setState({
+            searchBy: [event.target.value].toString()
         })
     }
 
@@ -37,11 +53,18 @@ class CategoriesContainer extends React.Component {
                 <div className="categories">
                     <h5>Filter Costumes by Category</h5>
                     {this.props.categories.map(category => 
-                        <Button variant="danger" key={category.id} value={category.id} style={{margin: '10px'}} onClick={this.filter}>{category.name}</Button>
+                        <Button variant="danger" key={category.id} value={category.id} style={{margin: '10px'}} onClick={this.filterCategories}>{category.name}</Button>
                     )}
                         <Button variant="danger" style={{margin: '10px'}} onClick={() => this.setState({ category_id: 0 }) } >All Costumes</Button>
                 </div>
                 <br></br>
+        
+                 <div className='search_word'>
+                    <FormControl type="search" placeholder="Search by Title" style={{width: '200px'}} onChange={this.filterByTitle}/>
+                </div>
+
+                <br></br>
+
                 <div className='costumes'> 
                     {this.renderCostumes()}  
                 </div>
